@@ -1,10 +1,35 @@
 def parse_file(file_path: str) -> list[str]:
+    """
+    Read a file and return its lines as a list of strings.
+
+    Parameters
+    ----------
+    file_path
+        Path to the file to read.
+
+    Returns
+    -------
+        Lines of the file, each retaining its newline character.
+    """
     with open(file_path, "r") as f:
         lines = f.readlines()
     return lines
 
 
 def read_d0010(lines: list[str]) -> list[dict]:
+    """
+    Parse D0010 flow lines into a structured list of meter point readings.
+
+    Parameters
+    ----------
+    lines
+        Raw lines from a D0010 file, including header (ZHV) and trailer (ZPT)
+        records.
+
+    Returns
+    -------
+        List of meter point dicts.
+    """
     meter_points = []
     current_mpan = None
     current_meter = None
