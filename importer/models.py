@@ -25,6 +25,7 @@ class MeterReading(models.Model):
     register_id = models.CharField(max_length=16)
     reading_datetime = models.DateTimeField()
     reading_value = models.DecimalField(max_digits=16, decimal_places=3)
+    source_file = models.CharField(max_length=255, blank=True, default="")
 
     class Meta:
         constraints = [

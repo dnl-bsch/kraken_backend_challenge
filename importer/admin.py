@@ -9,7 +9,8 @@ class MeterReadingAdmin(admin.ModelAdmin):
         "meter_serial_number",  
         "register_id", 
         "reading_datetime",  
-        "reading_value",  
+        "reading_value",
+        "source_file",
     )  
     search_help_text = "Search by MPAN or meter serial number"  
     search_fields = (  

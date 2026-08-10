@@ -21,7 +21,10 @@ class Command(BaseCommand):
         if not file_path.exists() or not file_path.is_file():
             raise CommandError(f"File not found: {file_path}")
 
-        meter_points = read_d0010(parse_file(file_path))
+        lines, source_file = parse_file(file_path)
+        result = read_d0010(lines, source_file)
+        source_file = result["source_file"]
+        meter_points = result["meter_points"]
 
         counts = {
             "meter_points": 0,
@@ -49,7 +52,10 @@ class Command(BaseCommand):
                             meter=meter,
                             register_id=reading_data["register_id"],
                             reading_datetime=reading_datetime,
-                            defaults={"reading_value": Decimal(reading_data["reading_value"])},
+                            defaults={
+                                "reading_value": Decimal(reading_data["reading_value"]),
+                                "source_file": source_file,
+                            },
                         )
                         if reading_created:
                             counts["readings_created"] += 1
