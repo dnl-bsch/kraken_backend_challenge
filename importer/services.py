@@ -59,10 +59,12 @@ def read_d0010(lines: list[str], source_file: str) -> list[dict]:
             current_meter = {"serial_number": fields[1], "readings": []}
             current_mpan["meters"].append(current_meter)
         elif record_type == "030":
-            current_meter["readings"].append({
-                "register_id": fields[1],
-                "reading_datetime": fields[2],  # parse as YYYYMMDDHHMMSS
-                "reading_value": fields[3],
-            })
+            current_meter["readings"].append(
+                {
+                    "register_id": fields[1],
+                    "reading_datetime": fields[2],  # parse as YYYYMMDDHHMMSS
+                    "reading_value": fields[3],
+                }
+            )
 
     return {"source_file": source_file, "meter_points": meter_points}

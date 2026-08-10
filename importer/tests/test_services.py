@@ -1,8 +1,11 @@
-from django.test import TestCase
 from pathlib import Path
+
+from django.test import TestCase
+
 from importer.services import parse_file, read_d0010
 
 test_file_path = Path(__file__).resolve().parents[2] / "DTC5259515123502080915D0010.uff"
+
 
 class ParseFileTest(TestCase):
     def test_parses_file(self):
@@ -30,25 +33,25 @@ class SaveRecordsTest(TestCase):
         expected_output = {
             "source_file": "DTC5259515123502080915D0010",
             "meter_points": [
-            {
-                "mpan": "1234567890123",
-                "meters": [
-                    {
-                        "serial_number": "SN12345",
-                        "readings": [
-                            {"register_id": "R1", "reading_datetime": "20240101120000", "reading_value": "100.5"},
-                            {"register_id": "R2", "reading_datetime": "20240101130000", "reading_value": "200.0"},
-                        ],
-                    },
-                    {
-                        "serial_number": "SN67890",
-                        "readings": [
-                            {"register_id": "R1", "reading_datetime": "20240101140000", "reading_value": "150.0"},
-                        ],
-                    },
-                ],
-            }
-        ]
+                {
+                    "mpan": "1234567890123",
+                    "meters": [
+                        {
+                            "serial_number": "SN12345",
+                            "readings": [
+                                {"register_id": "R1", "reading_datetime": "20240101120000", "reading_value": "100.5"},
+                                {"register_id": "R2", "reading_datetime": "20240101130000", "reading_value": "200.0"},
+                            ],
+                        },
+                        {
+                            "serial_number": "SN67890",
+                            "readings": [
+                                {"register_id": "R1", "reading_datetime": "20240101140000", "reading_value": "150.0"},
+                            ],
+                        },
+                    ],
+                }
+            ],
         }
 
         assert read_d0010(lines, filename) == expected_output

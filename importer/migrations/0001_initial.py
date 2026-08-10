@@ -5,44 +5,54 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='MeterPoint',
+            name="MeterPoint",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('mpan', models.CharField(max_length=13, unique=True)),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("mpan", models.CharField(max_length=13, unique=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Meter',
+            name="Meter",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('serial_number', models.CharField(max_length=64)),
-                ('meter_point', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='meters', to='importer.meterpoint')),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("serial_number", models.CharField(max_length=64)),
+                (
+                    "meter_point",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, related_name="meters", to="importer.meterpoint"
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='MeterReading',
+            name="MeterReading",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('register_id', models.CharField(max_length=16)),
-                ('reading_datetime', models.DateTimeField()),
-                ('reading_value', models.DecimalField(decimal_places=3, max_digits=16)),
-                ('meter', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='readings', to='importer.meter')),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("register_id", models.CharField(max_length=16)),
+                ("reading_datetime", models.DateTimeField()),
+                ("reading_value", models.DecimalField(decimal_places=3, max_digits=16)),
+                (
+                    "meter",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, related_name="readings", to="importer.meter"
+                    ),
+                ),
             ],
         ),
         migrations.AddConstraint(
-            model_name='meter',
-            constraint=models.UniqueConstraint(fields=('meter_point', 'serial_number'), name='unique_meter_per_point'),
+            model_name="meter",
+            constraint=models.UniqueConstraint(fields=("meter_point", "serial_number"), name="unique_meter_per_point"),
         ),
         migrations.AddConstraint(
-            model_name='meterreading',
-            constraint=models.UniqueConstraint(fields=('meter', 'register_id', 'reading_datetime'), name='unique_reading_per_meter_register_time'),
+            model_name="meterreading",
+            constraint=models.UniqueConstraint(
+                fields=("meter", "register_id", "reading_datetime"), name="unique_reading_per_meter_register_time"
+            ),
         ),
     ]

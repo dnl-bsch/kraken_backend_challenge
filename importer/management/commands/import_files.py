@@ -11,10 +11,10 @@ from importer.services import parse_file, read_d0010
 
 
 class Command(BaseCommand):
-    help = 'Reads files and imports them into the database'
+    help = "Reads files and imports them into the database"
 
     def add_arguments(self, parser):
-        parser.add_argument('file_path', type=str)
+        parser.add_argument("file_path", type=str)
 
     def handle(self, *args, **options):
         file_path = Path(options["file_path"]).expanduser().resolve()
