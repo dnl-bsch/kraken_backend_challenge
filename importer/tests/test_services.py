@@ -6,12 +6,16 @@ test_file_path = Path(__file__).resolve().parents[2] / "DTC5259515123502080915D0
 
 class ParseFileTest(TestCase):
     def test_parses_file(self):
-        records = parse_file(test_file_path)
-        assert len(records) > 0
+        lines, filename = parse_file(test_file_path)
+        assert len(lines) > 0
+        assert filename == "DTC5259515123502080915D0010"
 
 
 class SaveRecordsTest(TestCase):
     def test_read_d0010(self):
+
+        filename = "DTC5259515123502080915D0010"
+
         lines = [
             "ZHV|0000475656|D0010002|D|UDMS|X|MRCY|20160302153151||||OPER|",
             "026|1234567890123|",
@@ -23,7 +27,9 @@ class SaveRecordsTest(TestCase):
             "ZPT|0000475656|35||11|20160302154650|",
         ]
 
-        expected_output = [
+        expected_output = {
+            "source_file": "DTC5259515123502080915D0010",
+            "meter_points": [
             {
                 "mpan": "1234567890123",
                 "meters": [
@@ -43,5 +49,6 @@ class SaveRecordsTest(TestCase):
                 ],
             }
         ]
+        }
 
-        assert read_d0010(lines) == expected_output
+        assert read_d0010(lines, filename) == expected_output

@@ -1,6 +1,9 @@
-def parse_file(file_path: str) -> list[str]:
+from pathlib import Path
+
+
+def parse_file(file_path: str) -> tuple[list[str], str]:
     """
-    Read a file and return its lines as a list of strings.
+    Read a file and return its lines and the stem of the filename.
 
     Parameters
     ----------
@@ -9,14 +12,17 @@ def parse_file(file_path: str) -> list[str]:
 
     Returns
     -------
-        Lines of the file, each retaining its newline character.
+        Tuple of (lines, stem) where lines retains newline characters and
+        stem is the filename without extension, e.g.
+        ``"DTC5259515123502080915D0010"``.
     """
-    with open(file_path, "r") as f:
+    path = Path(file_path)
+    with open(path, "r") as f:
         lines = f.readlines()
-    return lines
+    return lines, path.stem
 
 
-def read_d0010(lines: list[str]) -> list[dict]:
+def read_d0010(lines: list[str], source_file: str) -> list[dict]:
     """
     Parse D0010 flow lines into a structured list of meter point readings.
 
@@ -25,10 +31,13 @@ def read_d0010(lines: list[str]) -> list[dict]:
     lines
         Raw lines from a D0010 file, including header (ZHV) and trailer (ZPT)
         records.
+    source_file
+        Stem of the source filename (without extension), e.g.
+        ``"DTC5259515123502080915D0010"``.
 
     Returns
     -------
-        List of meter point dicts.
+        Dict with a single ``source_file`` key and a ``meter_points`` list.
     """
     meter_points = []
     current_mpan = None
@@ -56,4 +65,4 @@ def read_d0010(lines: list[str]) -> list[dict]:
                 "reading_value": fields[3],
             })
 
-    return meter_points
+    return {"source_file": source_file, "meter_points": meter_points}
