@@ -2,7 +2,7 @@ from django.test import TestCase
 from pathlib import Path
 from importer.services import parse_file, read_d0010
 
-test_file_path = Path(__file__).resolve().parents[1] / "DTC5259515123502080915D0010.uff"
+test_file_path = Path(__file__).resolve().parents[2] / "DTC5259515123502080915D0010.uff"
 
 class ParseFileTest(TestCase):
     def test_parses_file(self):
@@ -11,7 +11,7 @@ class ParseFileTest(TestCase):
 
 
 class SaveRecordsTest(TestCase):
-    def test_saves_to_db(self):
+    def test_read_d0010(self):
         lines = [
             "ZHV|0000475656|D0010002|D|UDMS|X|MRCY|20160302153151||||OPER|",
             "026|1234567890123|",
